@@ -1,0 +1,8 @@
+__pycache__
+test
+build
+*.swp
+*.d
+*.o
+*.bin
+*.elf
