@@ -3,7 +3,7 @@
 Demonstration on using a Soft Core (**VexRiscv**)
 built with **LiTex** in a **Colorlight 5A-7B** (ECP5).
 This demo is based on
-[lab004][lab004] of [fpga_101][fpga_101] reposiotory.
+[lab004][lab004] of [fpga_101][fpga_101] repository.
 
 - push button is used as reset
 - led is used for *led* demo in firmware
