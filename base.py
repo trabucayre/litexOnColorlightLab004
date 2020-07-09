@@ -15,9 +15,9 @@ from ios import Led
 # IOs ----------------------------------------------------------------------------------------------
 
 _serial = [
-    ("serial", 0,
-        Subsignal("tx", Pins("F3")), # J1.1
-        Subsignal("rx", Pins("F1")), # J1.2
+    ("serialJ1", 0,
+        Subsignal("tx", Pins("j1:0")), # J1.1
+        Subsignal("rx", Pins("j1:1")), # J1.2
         IOStandard("LVCMOS33")
     ),
 ]
@@ -29,6 +29,7 @@ class BaseSoC(SoCCore):
         platform = colorlight_5a_75b.Platform(revision)
         sys_clk_freq = int(25e6)
 
+        # custom serial using j1 pins instead of led & button
         platform.add_extension(_serial)
 
         # SoC with CPU
@@ -37,7 +38,8 @@ class BaseSoC(SoCCore):
             clk_freq                 = 25e6,
             ident                    = "LiteX CPU Test SoC 5A-75B", ident_version=True,
             integrated_rom_size      = 0x8000,
-            integrated_main_ram_size = 0x4000)
+            integrated_main_ram_size = 0x4000,
+            uart_name                = "serialJ1")
 
         # Clock Reset Generation
         self.submodules.crg = CRG(platform.request("clk25"), ~platform.request("user_btn_n"))
