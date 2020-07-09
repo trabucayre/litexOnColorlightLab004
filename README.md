@@ -47,7 +47,7 @@ This demo is based on
 ### gateware
 Just:
 ```bash
-./base.py
+./base.py --build
 ```
 ### firmware
 ```bash
@@ -57,9 +57,11 @@ see [lab004] for more details.
 
 ## load bitstream
 ```bash
-openFPGALoader -c yourCable ./build/gateware/top.bit
+./base.py --load [--cable yourCable]
 ```
-where *yourCable* depends on your JTAG probe.
+where *yourCable* depends on your JTAG probe. If `--cable` is not provided
+*openFPGALoader* will uses ft2232` generic interface.
+
 ## load firmware
 ```bash
 lxterm /dev/ttyUSBX --kernel firmware/firmware.bin
