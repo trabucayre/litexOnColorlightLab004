@@ -1,4 +1,4 @@
-BUILD_DIR=../build/
+BUILD_DIR=../build/colorlight_5a_75b
 
 include $(BUILD_DIR)/software/include/generated/variables.mak
 include $(SOC_DIRECTORY)/software/common.mak
@@ -18,7 +18,7 @@ firmware.elf: $(OBJECTS)
 	$(CC) $(LDFLAGS) \
 		-T linker.ld \
 		-N -o $@ \
-		 $(BUILD_DIR)/software/libbase/crt0-ctr.o \
+		 $(BUILD_DIR)/software/libbase/crt0.o \
 		$(OBJECTS) \
 		-L$(BUILD_DIR)/software/libbase \
 		-L$(BUILD_DIR)/software/libcompiler_rt \
