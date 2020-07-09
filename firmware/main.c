@@ -7,7 +7,7 @@
 #include <console.h>
 #include <generated/csr.h>
 
-static void busy_wait(unsigned int ds)
+void busy_wait(unsigned int ds)
 {
 	timer0_en_write(0);
 	timer0_reload_write(0);
