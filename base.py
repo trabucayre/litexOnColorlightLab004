@@ -1,11 +1,16 @@
 #!/usr/bin/env python3
 
+import argparse
+import os
+
 from migen import *
 
 from migen.genlib.io import CRG
 
 from litex.build.generic_platform import IOStandard, Subsignal, Pins
 from litex_boards.platforms import colorlight_5a_75b
+
+from litex.build.lattice.trellis import trellis_args, trellis_argdict
 
 from litex.soc.integration.soc_core import *
 from litex.soc.integration.builder import *
@@ -52,7 +57,25 @@ class BaseSoC(SoCCore):
 
 # Build --------------------------------------------------------------------------------------------
 
-soc = BaseSoC(revision="7.0")
+def main():
+    parser = argparse.ArgumentParser(description="LiteX SoC on Colorlight 5A-75B")
+    builder_args(parser)
+    soc_core_args(parser)
+    trellis_args(parser)
+    parser.add_argument("--build", action="store_true", help="Build bitstream")
+    parser.add_argument("--load",  action="store_true", help="Load bitstream")
+    parser.add_argument("--cable", default="ft2232",    help="JTAG probe model")
+    args = parser.parse_args()
 
-builder = Builder(soc, output_dir="build", csr_csv="test/csr.csv")
-builder.build()
+    soc = BaseSoC(revision="7.0")
+
+    builder = Builder(soc, **builder_argdict(args))
+    builder.build(**trellis_argdict(args), run=args.build)
+
+    if args.load:
+        print(args.cable)
+        os.system("openFPGALoader -c " + args.cable + " " + \
+            os.path.join(builder.gateware_dir, soc.build_name + ".bit"))
+
+if __name__ == "__main__":
+    main()
