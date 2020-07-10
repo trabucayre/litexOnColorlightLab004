@@ -68,6 +68,18 @@ lxterm /dev/ttyUSBX --kernel firmware/firmware.bin
 ```
 where *ttyUSBX* is your USB <-> UART converter device.
 
+## boot
+```bash
+serialboot
+```
+
+## test
+To start the blink led use command
+```bash
+led
+```
+
+
 [fpga_101]: https://github.com/litex-hub/fpga_101
 [lab004]: https://github.com/litex-hub/fpga_101/tree/master/lab004
 [openFPGALoader]: https://github.com/trabucayre/openFPGALoader
