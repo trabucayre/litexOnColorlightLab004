@@ -1,13 +1,16 @@
 # litexOnColorlightLab004
 
 Demonstration on using a Soft Core (**VexRiscv**)
-built with **LiTex** in a **Colorlight 5A-7B** (ECP5).
+built with **LiTex** in a **Colorlight 5A-75B** or **Colorlight I5** (ECP5).
 This demo is based on
 [lab004][lab004] of [fpga_101][fpga_101] repository.
 
 - push button is used as reset
 - led is used for *led* demo in firmware
-- UART use (arbitrary) J1 pins 1 & 2
+
+## Colorlight 5A-75B
+
+UART use (arbitrary) J1 pins 1 & 2
 
 | name      | Pin | note        |
 |-----------|-----|-------------|
@@ -17,6 +20,17 @@ This demo is based on
 | Uart TX   | F3  | J1.1        |
 | Uart RX   | F1  | J1.2        |
 
+## Colorlight I5
+
+UART is directly available through CMSIS-DAP ACM interface
+
+| name        | Pin | note        |
+|-------------|-----|-------------|
+| clk25       | P3  | 25MHz clock |
+| cpu_reset_n | K18 | button J28  |
+| user_led    | U16 | button J28  |
+| Uart TX     | J17 | CMSIS-DAP   |
+| Uart RX     | H18 | CMSIS-DAP   |
 
 ## Prerequisite
 
@@ -27,9 +41,9 @@ This demo is based on
   everything).
 - yosys, nextpnr and prjtrellis
 
-### hardware
+### hardware (Colorlight 5A-75B only)
 
-- **ColorLight** has no on-board JTAG adapter, so user must solder a pinheader
+- **ColorLight 5A-75B** has no on-board JTAG adapter, so user must solder a pinheader
   (**J27** for JTAG signals, **J33** for VCC and **J34** for GND) and connect an external probe (see.
   [chubby75](https://github.com/q3k/chubby75/tree/master/5a-75b));
 - level shifter *74HC245T* are used between FPGA and Jx connectors. To be able
@@ -47,7 +61,11 @@ This demo is based on
 ### gateware
 Just:
 ```bash
-./base.py --build
+./base.py --version 5A-75B --build
+```
+or
+```bash
+./base.py --version I5 --build
 ```
 ### firmware
 ```bash
@@ -57,16 +75,17 @@ see [lab004] for more details.
 
 ## load bitstream
 ```bash
-./base.py --load [--cable yourCable]
+./base.py --version 5A-75B --load [--cable yourCable] # change 5A-75B by I5
 ```
 where *yourCable* depends on your JTAG probe. If `--cable` is not provided
-*openFPGALoader* will uses ft2232` generic interface.
+*openFPGALoader* will uses `ft2232` generic interface. Not required for I5.
 
 ## load firmware
 ```bash
-lxterm /dev/ttyUSBX --kernel firmware/firmware.bin
+lxterm /dev/ttyYYYX --kernel firmware/firmware.bin
 ```
-where *ttyUSBX* is your USB <-> UART converter device.
+where *ttyYYYX* is your USB <-> UART converter device (usually ttyUSB0 (5A-75B)
+or ttyACM0 (I5)).
 
 ## boot
 ```bash
