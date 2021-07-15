@@ -69,14 +69,6 @@ class BaseSoC(SoCCore):
 # Build --------------------------------------------------------------------------------------------
 
 def main():
-
-    #programmer = OpenFPGALoader("colorlight-i5")
-    #programmer = OpenFPGALoader(cable="digilent_hs2")
-    #programmer = OpenFPGALoader(freq=30e6)
-    #programmer = OpenFPGALoader("colorlight-i5", "digilent_hs2", 30e6)
-    #programmer = OpenFPGALoader("colorlight-i5", cable="digilent_hs2", freq=30e6)
-    #programmer = OpenFPGALoader(cable="digilent_hs2", freq=30e6)
-    #RETUrn
     parser = argparse.ArgumentParser(description="LiteX SoC on Colorlight 5A-75B")
     builder_args(parser)
     soc_core_args(parser)
@@ -92,14 +84,15 @@ def main():
     builder = Builder(soc, **builder_argdict(args))
     builder.build(**trellis_argdict(args), run=args.build)
 
+    bitstream_file = os.path.join(builder.gateware_dir, soc.build_name + ".bit")
     if args.load:
         if args.version == "5A-75B":
             #programmer = OpenFPGALoader("colorlight", args.cable)
             os.system("openFPGALoader " + "-b colorlight -c " +  args.cable +
                 " " + bitstream_file)
         else:
-            programmer = OpenFPGALoader("colorlight-i5", freq=20e6)
-            programmer.load_bitstream(os.path.join(builder.gateware_dir, soc.build_name + ".bit"))
+            programmer = OpenFPGALoader("colorlight-i5")
+            programmer.load_bitstream(bitstream_file)
 
 if __name__ == "__main__":
     main()
