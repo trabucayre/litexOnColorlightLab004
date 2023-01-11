@@ -43,7 +43,7 @@ class BaseSoC(SoCCore):
             serial_name = "serialJ1"
             reset_name = "user_btn_n"
         else:
-            platform = colorlight_i5.Platform(revision)
+            platform = colorlight_i5.Platform(version, revision)
             serial_name = "serial"
             reset_name = "cpu_reset_n"
 
@@ -76,7 +76,7 @@ def main():
     parser.add_argument("--build", action="store_true", help="Build bitstream")
     parser.add_argument("--load",  action="store_true", help="Load bitstream")
     parser.add_argument("--cable", default="ft2232",    help="JTAG probe model")
-    parser.add_argument("--version", default="5A-75B",  help="colorlight model (5A-75B / I5)")
+    parser.add_argument("--version", default="5A-75B",  help="colorlight model (5A-75B / i5)")
     args = parser.parse_args()
 
     soc = BaseSoC(args.version, revision="7.0")

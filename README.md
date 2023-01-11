@@ -65,7 +65,7 @@ Just:
 ```
 or
 ```bash
-./base.py --version I5 --build
+./base.py --version i5 --build
 ```
 ### firmware
 ```bash
