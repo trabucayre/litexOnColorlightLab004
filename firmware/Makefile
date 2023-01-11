@@ -1,9 +1,10 @@
-BUILD_DIR=../build/colorlight_5a_75b
+VERSION ?= 5a_7b
+BUILD_DIR=../build/colorlight_$(VERSION)
 
 include $(BUILD_DIR)/software/include/generated/variables.mak
 include $(SOC_DIRECTORY)/software/common.mak
 
-OBJECTS=main.o
+OBJECTS=crt0.o main.o
 
 all: firmware.bin
 
@@ -14,16 +15,22 @@ all: firmware.bin
 	$(OBJCOPY) -O binary $< $@
 	chmod -x $@
 
+vpath %.a $(PACKAGES:%=../%)
+
 firmware.elf: $(OBJECTS)
 	$(CC) $(LDFLAGS) \
 		-T linker.ld \
 		-N -o $@ \
-		 $(BUILD_DIR)/software/libbase/crt0.o \
 		$(OBJECTS) \
-		-L$(BUILD_DIR)/software/libbase \
-		-L$(BUILD_DIR)/software/libcompiler_rt \
-		-lbase-nofloat -lcompiler_rt
+		$(PACKAGES:%=-L$(BUILD_DIR)/software/%) \
+		-Wl,--whole-archive \
+		-Wl,--gc-sections \
+		-Wl,-Map,$@.map \
+		$(LIBS:lib%=-l%)
+
 	chmod -x $@
+
+VPATH = $(BIOS_DIRECTORY):$(BIOS_DIRECTORY)/cmds:$(CPU_DIRECTORY)
 
 main.o: main.c
 	$(compile)

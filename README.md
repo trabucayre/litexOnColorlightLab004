@@ -69,8 +69,11 @@ or
 ```
 ### firmware
 ```bash
-cd firmware && make
+cd firmware && make [VERSION=5a_75b]
 ```
+
+where `VERSION` may be **5a_75b** or **i5**
+
 see [lab004] for more details.
 
 ## load bitstream
