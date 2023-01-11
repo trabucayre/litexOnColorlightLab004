@@ -82,7 +82,7 @@ where *yourCable* depends on your JTAG probe. If `--cable` is not provided
 
 ## load firmware
 ```bash
-lxterm /dev/ttyYYYX --kernel firmware/firmware.bin
+litex_term /dev/ttyYYYX --kernel firmware/firmware.bin
 ```
 where *ttyYYYX* is your USB <-> UART converter device (usually ttyUSB0 (5A-75B)
 or ttyACM0 (I5)).
